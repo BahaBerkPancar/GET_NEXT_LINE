@@ -6,13 +6,14 @@ char *bytes_read(int fd, char *str)
     s.i = 0;
     while(str[s.i] != '\n' && str[s.i] != '\0')
         s.i++;
-    s.str = calloc(1, s.i + 2);
+    s.str = malloc(sizeof(char) * s.i + 1);
     if(!s.str)
         return(NULL);
-    s.str = ft_substr(str, 0, s.i++);
+    s.str = ft_substr(str, 0, s.i);
+    if(!s.str)
+        return(NULL);
     if(str[s.i] == '\0')
         s.str[s.i++] = str[s.i];
-    s.str[s.i] = '\0';
     return(s.str);
 }
 char *remains(int fd, char *str)
@@ -24,19 +25,18 @@ char *remains(int fd, char *str)
         s.i++;
     if(str[s.i] == '\n')
         s.i++;
-    while(str[i++] != '\0');
-    str += i;
+    str += s.i;
     return(str);
 }
 char *reads(int fd, char *str)
 {
     t_gnl s;
 
-    s.str = calloc(1, BUFFER + 1); // you must free in every situation
+    s.str = calloc(1, BUFFER_SIZE + 1); // you must free in every situation
     s.i = 1;    // bites read
     while(!ft_strchr(str, '\n') && s.i != 0)
     {
-        s.i = read(fd, s.str, BUFFER);
+        s.i = read(fd, s.str, BUFFER_SIZE);
         if(s.i == -1) // faliure
             return(free(s.str), free(str), NULL);
         str = ft_strjoin(str, s.str); // put together
