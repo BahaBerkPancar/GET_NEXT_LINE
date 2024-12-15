@@ -24,19 +24,23 @@ char *remains(char *str)
         s.i++;
     if(str[s.i] == '\n')
         s.i++;
-    str += s.i;
+    str = ft_strdup(str + s.i);
+    if(!str)
+        return(free(str), NULL);
     return(str);
 }
 char *reads(int fd, char *str)
 {
     t_gnl s;
 
+    if (!fd)
+        return(NULL);
     s.str = calloc(1, BUFFER_SIZE + 1);
     s.i = 1;
     while(!ft_strchr(str, '\n') && s.i != 0)
     {
         s.i = read(fd, s.str, BUFFER_SIZE);
-        if(!s.i) // faliure
+        if(!s.i)
             return(free(s.str), free(str), NULL);
         str = ft_strjoin(str, s.str);
     }
@@ -51,5 +55,6 @@ char *get_next_line(int fd)
         return(NULL);
     final = bytes_read(s.str);
     s.str = remains(s.str);
+    system("leaks a.out");
     return (final);
 }
