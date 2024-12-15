@@ -10,7 +10,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	if (ft_strlen(s) < start)
 		return (ft_strdup(""));
-	str = (char *)malloc(sizeof(char) * (len + 1));
+	str = (char *)malloc(sizeof(char) * (len + 2));
 	if (!str)
 		return (NULL);
 	while (i < len && s[start] != '\0')
@@ -94,5 +94,5 @@ char	*ft_strjoin(char *s1, char const *s2)
 		j++;
 	}
 	str[i] = '\0';
-	return (str);
+	return (free(s1), str);
 }
